@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
+from app import rules as rules_module
 from app.db import (
     get_report,
     get_reviews,
@@ -86,4 +87,22 @@ def rules_check(batch: BatchInfo):
     return {
         "results": [asdict(r) for r in results],
         "workflow_status": decide_status(results),
+    }
+
+
+@app.get("/rules/limits")
+def rules_limits():
+    return {
+        "count": len(rules_module.LIMITS),
+        "limits": [asdict(r) for r in rules_module.LIMITS],
+        "warnings": rules_module.LIMIT_WARNINGS,
+    }
+
+
+@app.post("/rules/reload")
+def rules_reload():
+    rules_module.reload_limits()
+    return {
+        "count": len(rules_module.LIMITS),
+        "warnings": rules_module.LIMIT_WARNINGS,
     }

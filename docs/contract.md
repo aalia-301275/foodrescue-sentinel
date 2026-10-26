@@ -9,6 +9,9 @@ Base URL (local): http://127.0.0.1:8000
 - POST /cases/{id}/review  body: {reviewer, decision, notes}
 - GET  /cases/{id}/reviews -> list of human decisions for that case
 - POST /rules/check        body: BatchInfo -> {results[], workflow_status}
+- GET  /rules/limits       -> loaded safe-window limits + warnings about rejected rows
+- POST /rules/reload       -> re-read backend/data/safe_windows.csv without restarting
+- Rule results may now include "source" and "link" (the citation for the limit used)
 
 SSE event names: thought, tool_call, tool_result, rule_check, question, final_report
 Data shapes: see backend/app/schemas.py
