@@ -5,13 +5,11 @@ from typing import List, Optional
 
 from app.schemas import HumanReview, ReviewReport
 
-# The database is one file, stored in the backend folder.
 DB_PATH = Path(__file__).resolve().parent.parent / "sentinel.db"
 
 
 @contextmanager
 def db():
-    """Open the database, save changes when done, then close it."""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     try:
@@ -22,7 +20,6 @@ def db():
 
 
 def init_db():
-    """Create the tables if they don't exist yet."""
     with db() as conn:
         conn.execute(
             """CREATE TABLE IF NOT EXISTS cases (
@@ -39,6 +36,15 @@ def init_db():
                 decision TEXT NOT NULL,
                 notes TEXT,
                 reviewed_at TEXT DEFAULT CURRENT_TIMESTAMP
+            )"""
+        )
+        conn.execute(
+            """CREATE TABLE IF NOT EXISTS messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                case_id TEXT NOT NULL,
+                role TEXT NOT NULL,
+                content TEXT NOT NULL,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP
             )"""
         )
 
@@ -80,6 +86,23 @@ def get_reviews(case_id: str) -> list:
         rows = conn.execute(
             "SELECT reviewer, decision, notes, reviewed_at FROM reviews "
             "WHERE case_id = ? ORDER BY id",
+            (case_id,),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def save_message(case_id: str, role: str, content: str):
+    with db() as conn:
+        conn.execute(
+            "INSERT INTO messages (case_id, role, content) VALUES (?, ?, ?)",
+            (case_id, role, content),
+        )
+
+
+def get_messages(case_id: str) -> list:
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT role, content FROM messages WHERE case_id = ? ORDER BY id",
             (case_id,),
         ).fetchall()
     return [dict(r) for r in rows]
