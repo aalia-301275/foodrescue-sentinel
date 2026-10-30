@@ -1,5 +1,5 @@
-import asyncio
 import json
+import uuid
 from dataclasses import asdict
 
 from fastapi import FastAPI, HTTPException
@@ -7,15 +7,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
 from app import rules as rules_module
+from app.agent import run_agent
 from app.db import (
+    get_messages,
     get_report,
     get_reviews,
     init_db,
     list_reports,
+    save_message,
     save_report,
     save_review,
 )
-from app.mock_data import MOCK_EVENTS, MOCK_REPORT
+from app.mock_data import MOCK_REPORT
 from app.rules import decide_status, evaluate_batch
 from app.schemas import BatchInfo, ChatRequest, HumanReview, ReviewReport
 
@@ -28,7 +31,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Runs once when the server starts.
 init_db()
 if get_report(MOCK_REPORT.case_id) is None:
     save_report(MOCK_REPORT)
@@ -38,6 +40,10 @@ def sse(event: str, data: dict) -> str:
     return f"event: {event}\ndata: {json.dumps(data)}\n\n"
 
 
+def new_case_id() -> str:
+    return f"case-{uuid.uuid4().hex[:6]}"
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
@@ -45,10 +51,24 @@ def health():
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
+    case_id = req.case_id or new_case_id()
+    history = get_messages(case_id)
+    save_message(case_id, "user", req.message)
+
     async def stream():
-        for event, data in MOCK_EVENTS:
+    yield sse("case", {"case_id": case_id})
+    try:
+        async for event, data in run_agent(case_id, req.message, history):
+            if event == "final_report":
+                save_report(ReviewReport.model_validate(data))
+                save_message(case_id, "assistant", data["summary"])
+            elif event == "question":
+                save_message(case_id, "assistant", data["text"])
+
             yield sse(event, data)
-            await asyncio.sleep(0.8)
+
+    except Exception as exc:
+        yield sse("error", {"message": f"Agent failed: {type(exc).__name__}"})
 
     return StreamingResponse(stream(), media_type="text/event-stream")
 
@@ -64,6 +84,11 @@ def case_detail(case_id: str):
     if report is None:
         raise HTTPException(status_code=404, detail="Case not found")
     return report
+
+
+@app.get("/cases/{case_id}/messages")
+def case_messages(case_id: str):
+    return get_messages(case_id)
 
 
 @app.post("/cases/{case_id}/review")
