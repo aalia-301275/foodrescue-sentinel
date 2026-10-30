@@ -53,22 +53,22 @@ def health():
 async def chat(req: ChatRequest):
     case_id = req.case_id or new_case_id()
     history = get_messages(case_id)
-    save_message(case_id, "user", req.message)
-
+    save_message(case_id, "user",req.message)
     async def stream():
-    yield sse("case", {"case_id": case_id})
-    try:
-        async for event, data in run_agent(case_id, req.message, history):
-            if event == "final_report":
-                save_report(ReviewReport.model_validate(data))
-                save_message(case_id, "assistant", data["summary"])
-            elif event == "question":
-                save_message(case_id, "assistant", data["text"])
+        yield sse("case", {"case_id": case_id})
+        try:
+            async for event, data in run_agent(case_id, req.message, history):
+                if event == "final_report":
+                    save_report(ReviewReport.model_validate(data))
+                    save_message(case_id, "assistant", data["summary"])
 
-            yield sse(event, data)
+                elif event == "question":
+                    save_message(case_id, "assistant", data["text"])
 
-    except Exception as exc:
-        yield sse("error", {"message": f"Agent failed: {type(exc).__name__}"})
+                yield sse(event, data)
+
+        except Exception as exc:
+            yield sse("error", {"message": f"Agent failed: {type(exc).__name__}"})
 
     return StreamingResponse(stream(), media_type="text/event-stream")
 
