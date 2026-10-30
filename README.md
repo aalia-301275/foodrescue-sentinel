@@ -246,9 +246,9 @@ FoodRescue Sentinel is a hackathon prototype and has important limitations:
 | Team member | Responsibility |
 |---|---|
 | Aalia Khan | Backend integration, database and rules engine |
-| Khunsa Mahmood | Knowledge library and food-safety references |
+| Khansa Mahmood | Knowledge library and food-safety references |
 | Amina Hasanaath | AI agent and Nemotron integration |
-| Ayesha Sultana | Frontend development |
+| Khansa Mahmood | Frontend development |
 
 ## Acknowledgements
 
