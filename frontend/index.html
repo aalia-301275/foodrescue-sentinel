@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoodRescue Sentinel | AI Agent Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">✳</span>
+        <div>
+          <h2>FoodRescue</h2>
+          <p>SENTINEL / AI</p>
+        </div>
+      </div>
+
+      <div class="sidebar-content">
+        <span class="section-label">WORKSPACE</span>
+        <div class="nav-item active">◈ &nbsp; Agent Dashboard</div>
+        <div class="nav-item">▤ &nbsp; Safety Review</div>
+
+        <div class="sidebar-info">
+          <span class="section-label">ABOUT</span>
+          <p>AI-assisted food donation screening with evidence tracking and human review.</p>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        <span>Demo Environment</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FOOD SAFETY INTELLIGENCE</p>
+          <h1>Agent Dashboard</h1>
+          <p class="subtitle">Review food donation batches with AI-assisted analysis.</p>
+        </div>
+        <span class="demo-badge">LIVE DEMO</span>
+      </header>
+
+      <div class="dashboard">
+        <section class="panel chat-panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Donation Assistant</h3>
+              <p>Describe a batch to begin a review.</p>
+            </div>
+            <span class="panel-icon">✦</span>
+          </div>
+
+          <div id="chatMessages" class="chat-messages">
+            <div class="message assistant">
+              <div class="avatar">✳</div>
+              <div class="bubble">
+                Hello! I'm your food donation review assistant.
+                Describe the food, preparation time, storage,
+                and packaging. I'll help identify missing evidence
+                and potential safety concerns.
+              </div>
+            </div>
+          </div>
+
+          <form id="chatForm" class="chat-form">
+            <textarea
+              id="messageInput"
+              placeholder="Example: We have 20 boxes of cooked rice prepared at 10 AM..."
+              rows="3"
+              required
+            ></textarea>
+            <div class="form-actions">
+              <span>Enter to send · Shift+Enter for a new line</span>
+              <button id="sendButton" type="submit">Analyze ↗</button>
+            </div>
+          </form>
+        </section>
+
+        <div class="right-column">
+          <section class="panel activity-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Agent Activity</h3>
+                <p>Live reasoning and workflow events</p>
+              </div>
+              <span id="agentStatus" class="status-pill">Idle</span>
+            </div>
+            <div id="activityLog" class="activity-log">
+              <div class="empty-state">
+                <span>◎</span>
+                <p>Agent events will appear here when you start a review.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel report-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Safety Review Report</h3>
+                <p>Evidence, concerns, and next steps</p>
+              </div>
+              <span class="panel-icon">▤</span>
+            </div>
+            <div id="reportContent" class="report-content">
+              <div class="empty-state">
+                <span>▧</span>
+                <p>No report generated yet.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        FoodRescue Sentinel · AI-assisted review only · Final safety decisions require human oversight
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
