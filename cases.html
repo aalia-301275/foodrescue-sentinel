@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#2ec4b6">
+	<title>Case review | FoodRescue Sentinel</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="app.css">
+	<script src="app.js" defer></script>
+</head>
+<body data-page="cases">
+	<div class="app-shell">
+		<aside class="sidebar">
+			<a class="brand" href="index.html"><span class="brand-mark">F</span><span class="brand-name">FoodRescue Sentinel<span>DONATION REVIEW DESK</span></span></a>
+			<div class="nav-label">Workspace</div>
+			<nav class="nav" aria-label="Main navigation">
+				<a class="nav-button" href="index.html"><span class="nav-glyph">01</span>Overview</a>
+				<a class="nav-button active" href="cases.html" aria-current="page"><span class="nav-glyph">02</span>Case review</a>
+				<a class="nav-button" href="rules.html"><span class="nav-glyph">03</span>Rule check</a>
+				<a class="nav-button" href="limits.html"><span class="nav-glyph">04</span>Source limits</a>
+			</nav>
+			<div class="sidebar-bottom"><div class="connection"><span id="connectionDot" class="connection-dot"></span><span id="connectionLabel">Checking API</span></div><div id="apiAddress" class="api-address"></div></div>
+		</aside>
+		<div class="workspace">
+			<header class="topbar"><div class="crumb">OPERATIONS / CASES</div><div class="top-actions"><span id="todayLabel" class="today"></span><span class="avatar" title="Review desk">RD</span></div></header>
+			<main class="page">
+				<div class="page-heading"><div><div class="eyebrow">Review workspace</div><h1>Case review</h1><p class="subheading">Inspect evidence, ask follow-up questions, and log the human decision.</p></div><button class="button" id="refreshCases">Refresh cases</button></div>
+				<div id="caseNotice" class="notice hidden" role="status"></div>
+				<div class="case-layout"><aside class="panel case-sidebar"><h2>Cases <span id="caseCount" class="count-label"></span></h2><div id="casePicker" class="case-picker"><div class="skeleton">Loading…</div></div></aside><div id="caseDetail" class="case-main"><div class="panel empty">Loading case details…</div></div></div>
+			</main>
+		</div>
+	</div>
+</body>
+</html>

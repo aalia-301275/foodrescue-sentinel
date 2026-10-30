@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#2ec4b6">
+	<title>Rule check | FoodRescue Sentinel</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="app.css">
+	<script src="app.js" defer></script>
+</head>
+<body data-page="rules">
+	<div class="app-shell">
+		<aside class="sidebar">
+			<a class="brand" href="index.html"><span class="brand-mark">F</span><span class="brand-name">FoodRescue Sentinel<span>DONATION REVIEW DESK</span></span></a>
+			<div class="nav-label">Workspace</div>
+			<nav class="nav" aria-label="Main navigation">
+				<a class="nav-button" href="index.html"><span class="nav-glyph">01</span>Overview</a>
+				<a class="nav-button" href="cases.html"><span class="nav-glyph">02</span>Case review</a>
+				<a class="nav-button active" href="rules.html" aria-current="page"><span class="nav-glyph">03</span>Rule check</a>
+				<a class="nav-button" href="limits.html"><span class="nav-glyph">04</span>Source limits</a>
+			</nav>
+			<div class="sidebar-bottom"><div class="connection"><span id="connectionDot" class="connection-dot"></span><span id="connectionLabel">Checking API</span></div><div id="apiAddress" class="api-address"></div></div>
+		</aside>
+		<div class="workspace">
+			<header class="topbar"><div class="crumb">OPERATIONS / RULE CHECK</div><div class="top-actions"><span id="todayLabel" class="today"></span><span class="avatar" title="Review desk">RD</span></div></header>
+			<main class="page">
+				<div class="page-heading"><div><div class="eyebrow">Evidence evaluation</div><h1>Rule check</h1><p class="subheading">Confirm each field before checking. Inferred values are not treated as confirmed evidence.</p></div><button class="button" id="loadCaseIntoRules">Load selected case</button></div>
+				<div id="rulesNotice" class="notice hidden" role="status"></div>
+				<div class="rule-layout">
+					<section class="panel"><div class="panel-heading"><div><h2>Batch information</h2><div class="panel-note">All six evidence fields are required for a complete check.</div></div></div><form id="ruleForm"><div id="ruleFields" class="rule-form-grid"></div><button class="button primary" type="submit">Evaluate batch</button></form></section>
+					<section class="panel"><div class="panel-heading"><div><h2>Evaluation</h2><div class="panel-note">Status describes the review workflow only.</div></div></div><div id="ruleOutput" class="empty">Run a check to see field results, source citations, and the next workflow status.</div></section>
+				</div>
+			</main>
+		</div>
+	</div>
+</body>
+</html>
